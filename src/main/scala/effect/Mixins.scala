@@ -1,7 +1,5 @@
 package com.raunakjodhawat
-package effect.individual
-
-import effect.EffectSystem
+package effect
 
 object Mixins {
   trait FlatMap[Effect[_]] extends EffectSystem[Effect] {
