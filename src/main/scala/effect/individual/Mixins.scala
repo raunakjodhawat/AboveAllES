@@ -4,14 +4,14 @@ package effect.individual
 import effect.EffectSystem
 
 object Mixins {
-  trait FlatMap[Effect[_], A] extends EffectSystem[Effect] {
+  trait FlatMap[Effect[_], A] extends EffectSystem[Effect, A] {
     def flatMap[B](
         a: A,
-        f: A => EffectSystem[Effect]
-    ): EffectSystem[Effect]
+        f: A => EffectSystem[Effect, B]
+    ): EffectSystem[Effect, B]
   }
 
-  trait Map[Effect[_], A] extends EffectSystem[Effect] {
-    def map[B](a: A, f: A => B): EffectSystem[Effect]
+  trait Map[Effect[_], A] extends EffectSystem[Effect, A] {
+    def map[B](a: A, f: A => EffectSystem[Effect, B]): EffectSystem[Effect, B]
   }
 }
