@@ -45,3 +45,4 @@ build/
 
 ### Scala ###
 .bsp/
+public-key.asc
