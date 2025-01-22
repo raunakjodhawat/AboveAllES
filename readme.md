@@ -33,4 +33,7 @@ That way, who ever is using your libary can individually select the Mixin they w
 ### Contribution
 PR's are welcome, if you want to connect with me, you can do so on [LinkedIn](https://www.linkedin.com/in/jodhawat/)
 
+### Publishing
+> sbt publishSigned
+> sbt sonatypeBundleRelease
 
