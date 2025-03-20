@@ -155,4 +155,72 @@ object Mixins {
         map: A => B
     ): Effect[B]
   }
+
+  trait Product[Effect[_]] extends EffectSystem[Effect] {
+    def product[A, B](fa: Effect[A], fb: Effect[B]): Effect[(A, B)]
+    def productL[A, B](fa: Effect[A], fb: Effect[B]): Effect[A]
+    def productR[A, B](fa: Effect[A], fb: Effect[B]): Effect[B]
+  }
+
+  trait Race[Effect[_]] extends EffectSystem[Effect] {
+    def race[A, B](fa: Effect[A], fb: Effect[B]): Effect[Either[A, B]]
+  }
+
+  trait Background[Effect[_], Resource[_], Outcome[_]]
+      extends EffectSystem[Effect] {
+    def background[A](fa: Effect[A]): Resource[Effect[Outcome[A]]]
+  }
+
+  trait Supervise[Effect[_], Fiber[_], Supervisor[_]]
+      extends EffectSystem[Effect] {
+    def supervise[A](
+        fa: Effect[A],
+        supervisor: Supervisor[_]
+    ): Effect[Fiber[A]]
+  }
+
+  trait OrElse[Effect[_]] extends EffectSystem[Effect] {
+    def orElse[A](fa: Effect[A], fb: => Effect[A]): Effect[A]
+  }
+
+  trait Option[Effect[_]] extends EffectSystem[Effect] {
+    def option[A](fa: Effect[A]): Effect[scala.Option[A]]
+  }
+
+  trait IterateUntil[Effect[_]] extends EffectSystem[Effect] {
+    def iterateUntil[A](fa: Effect[A], p: A => Boolean): Effect[A]
+    def iterateWhile[A](fa: Effect[A], p: A => Boolean): Effect[A]
+  }
+
+  trait AndWait[Effect[_]] extends EffectSystem[Effect] {
+    def andWait[A](fa: Effect[A], duration: Long): Effect[A]
+  }
+
+  trait SyncStep[Effect[_]] extends EffectSystem[Effect] {
+    def syncStep[A, SyncEffect[_]](
+        fa: Effect[A],
+        limit: Int
+    ): SyncEffect[Either[Effect[A], A]]
+  }
+
+  trait IfM[Effect[_]] extends EffectSystem[Effect] {
+    def ifM[A, B](
+        fb: Effect[Boolean],
+        ifTrue: => Effect[B],
+        ifFalse: => Effect[B]
+    ): Effect[B]
+  }
+
+  trait ToResource[Effect[_], Resource[_]] extends EffectSystem[Effect] {
+    def toResource[A](fa: Effect[A]): Resource[A]
+  }
+
+  trait ReplicateA[Effect[_]] extends EffectSystem[Effect] {
+    def replicateA[A](fa: Effect[A], n: Int): Effect[List[A]]
+    def replicateA_[A](fa: Effect[A], n: Int): Effect[Unit]
+  }
+
+  trait Rethrow[Effect[_]] extends EffectSystem[Effect] {
+    def rethrow[A, B](fa: Effect[Either[Throwable, B]]): Effect[B]
+  }
 }
